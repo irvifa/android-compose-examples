@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BusinessCard</string>
+    <string name="full_name">Evelyn Wu</string>
+    <string name="title">Software Engineer</string>
+    <string name="phone_number">123456789</string>
+    <string name="email">evewu@goog.com</string>
+    <string name="social_media_handle">@evelynwu</string>
+</resources>
