@@ -16,12 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.irvifa.bussinesscardapplication.businesscard.api.Contact
 import com.github.irvifa.bussinesscardapplication.businesscard.api.Person
 import com.github.irvifa.bussinesscardapplication.businesscard.ui.theme.BusinessCardTheme
+import com.google.gson.Gson
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +35,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    BusinessCard()
+                    val gson = Gson()
+                    val i: InputStream = this.assets.open("person.json")
+                    val br = BufferedReader(InputStreamReader(i))
+                    val person: Person = gson.fromJson(br, Person::class.java)
+                    BusinessCard(person)
                 }
             }
         }
@@ -113,29 +119,17 @@ fun GetContact(contact: Contact) {
 }
 
 @Composable
-fun BusinessCard() {
-    val contact = Contact(
-        stringResource(R.string.phone_number),
-        stringResource(R.string.email),
-        stringResource(R.string.social_media_handle)
-    );
-    val person =
-        Person(
-            stringResource(R.string.full_name),
-            stringResource(R.string.title),
-            contact
-        )
+fun BusinessCard(person: Person) {
+
     GetBasicInformation(person)
     GetContact(contact = person.contact)
 }
 
-@Preview(showBackground = true)
 @Composable
-fun BusinessCardPreview() {
+fun BusinessCardPreview(person: Person) {
     BusinessCardTheme {
         Surface {
-            BusinessCard()
+            BusinessCard(person)
         }
-
     }
 }
